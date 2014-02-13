@@ -84,7 +84,8 @@ List of kerberos domains
 
 - *Default*: undef
 
-- *Example*:
+- *Hiera example*:
+<pre>
 krb5::realms:
   'EXAMPLE.COM':
     default_domain: 'example.com'
@@ -94,6 +95,7 @@ krb5::realms:
     admin_server:
       - 'kdc1.example.com:749'
       - 'kdc2.example.com:749'
+</pre>
 
 appdefaults
 -----------
@@ -101,7 +103,8 @@ List of defaults for apps
 
 - *Default*: undef
 
-- *Example*:
+- *Hiera example*:
+<pre>
 krb5::appdefaults:
   pam:
     'debug': 'false'
@@ -109,6 +112,7 @@ krb5::appdefaults:
     'renew_lifetime': '36000'
     'forwardable': 'true'
     'krb4_convert': 'false'
+</pre>
 
 domain_realm
 ------------
@@ -116,9 +120,11 @@ List of domain realms
 
 - *Default*: undef
 
-- *Example*:
+- *Hiera example*:
+<pre>
 krb5::domain_realm:
   'example.com': 'EXAMPLE.COM'
+</pre>
 
 package
 -------
