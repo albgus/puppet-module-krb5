@@ -15,10 +15,11 @@ class krb5 (
     $package              = 'krb5-libs',
     $krb5conf_file        = '/etc/krb5.conf',
 ) {
-  package{$package:
-    ensure => present,
+  package{ $package:
+    ensure  => present,
   }
-  file{'krb5conf':
+
+  file{ 'krb5conf':
     path    => $krb5conf_file,
     ensure  => present,
     owner   => 'root',
