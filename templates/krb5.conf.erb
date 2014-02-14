@@ -4,6 +4,7 @@
 default = <%= @logging_default %>
 kdc = <%= @logging_kdc %>
 admin_server = <%= @logging_admin_server %>
+<% if @default_realm or @dns_lookup_realm or @dns_lookup_kdc or @ticket_lifetime or @default_keytab_name or @forwardable or @proxiable -%>
 
 [libdefaults]
 <% if @default_realm -%>default_realm = <%= @default_realm %><% end -%>
@@ -20,8 +21,9 @@ admin_server = <%= @logging_admin_server %>
 
 <% if @proxiable -%>proxiable = <%= @proxiable %><% end -%>
 
-
+<% end -%>
 <% if @appdefaults -%>
+
 [appdefaults]
 <% @appdefaults.keys.sort.each do |key| -%>
 <%= key %> = {
@@ -31,8 +33,8 @@ admin_server = <%= @logging_admin_server %>
 }
 <% end -%>
 <% end -%>
-
 <% if @realms -%>
+
 [realms]
 <% @realms.keys.sort.each do |key| -%>
 <%= key %> = {
@@ -52,8 +54,8 @@ admin_server = <%= @logging_admin_server %>
 }
 <% end -%>
 <% end -%>
-
 <% if @domain_realm -%>
+
 [domain_realm]
 <% @domain_realm.keys.sort.each do |key| -%>
 .<%= key %> = <%= @domain_realm[key] %>
