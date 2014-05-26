@@ -12,10 +12,25 @@ class krb5 (
     $realms               = undef,
     $appdefaults          = undef,
     $domain_realm         = undef,
-    $package              = 'krb5-libs',
+    $package              = 'USE_DEFAULTS',
     $krb5conf_file        = '/etc/krb5.conf',
 ) {
-  package{ $package:
+  if $package == 'USE_DEFAULTS' {
+    case $::osfamily {
+      'RedHat': {
+        $package_real = 'krb5-libs'
+      }
+      'Suse': {
+        $package_real = 'krb5'
+      }
+      default: {
+        fail("krb5 only supports default package names for RedHat and Suse. Detected osfamily is <${::osfamily}>. Please specify package name with the \$package variable.")
+      }
+    }
+  } else {
+    $package_real = $package
+  }
+  package{ $package_real:
     ensure  => present,
   }
 

@@ -1,7 +1,8 @@
 require 'spec_helper'
 describe 'krb5' do
 
-  context 'with defaults for all parameters' do
+  context 'with defaults for all parameters on RedHat' do
+    let(:facts) do { :osfamily => 'RedHat', } end
     it { should contain_class('krb5') }
     it { should contain_package('krb5-libs') }
     it { should contain_file('krb5conf').with({
@@ -16,6 +17,24 @@ default = FILE:/var/log/krb5libs.log
 kdc = FILE:/var/log/krb5kdc.log
 admin_server = FILE:/var/log/kadmind.log
 ',})}
+  end
+  context 'with defaults for all parameters on Suse' do
+    let(:facts) do { :osfamily => 'Suse', } end
+    it { should contain_class('krb5') }
+    it { should contain_package('krb5') }
+  end
+  context 'on unsupported osfamily' do
+    let(:facts) do { :osfamily => 'Debian', } end
+    it 'should fail' do
+      expect {
+        should contain_class('krb5')
+      }.to raise_error(Puppet::Error,/krb5 only supports default package names for RedHat and Suse./)
+    end
+  end
+  context 'on unsupported osfamily with package set' do
+    let(:facts) do { :osfamily => 'Debian', } end
+    let(:params) do { :package => 'krb5-package', } end
+    it { should contain_package('krb5-package') }
   end
   context 'with all parameters set' do
     let(:params) do
@@ -44,7 +63,8 @@ admin_server = FILE:/var/log/kadmind.log
         },
         :domain_realm         => {
           'example.com'       => 'EXAMPLE.COM',
-        }
+        },
+        :package              => 'krb5-package',
       }
     end
     it { should contain_file('krb5conf').with({
@@ -86,5 +106,6 @@ EXAMPLE.COM = {
 .example.com = EXAMPLE.COM
 example.com = EXAMPLE.COM
 '}) }
+    it { should contain_package('krb5-package') }
   end
 end
